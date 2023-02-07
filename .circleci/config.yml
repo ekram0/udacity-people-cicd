@@ -29,17 +29,20 @@ commands:
               sudo apt install software-properties-common  
               sudo add-apt-repository --yes --update ppa:ansible/ansible 
               sudo apt install ansible
-#   destroy-environment:
-#     description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
-#     parameters:
-#       # Add parameter here   
-#     steps:
-#       - run:
-#           name: Destroy environments
-#           when: on_fail
-#           command: |
-#             # Your code here
-#             exit 1
+    # destroy-environment:
+    #   description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
+    #   parameters:
+    #     Workflow_ID:
+    #       type: string
+    #       default: ${CIRCLE_WORKFLOW_ID:0:7}
+    #   steps:
+    #     - run:
+    #         name: Destroy environments
+    #         when: on_fail
+    #         command: |
+    #           aws s3 rm s3://udapeople-<<parameters.Workflow_ID>> --recursive
+    #           aws cloudformation delete-stack --stack-name udapeople-frontend-<< parameters.Workflow_ID >>
+    #           aws cloudformation delete-stack --stack-name udapeople-backend-<< parameters.Workflow_ID >>
 
 #   revert-migrations:
 #     description: Revert the last migration if successfully run in the current workflow.
@@ -187,9 +190,9 @@ jobs:
           name: Add back-end ip to ansible inventory
           command: |
             BACKEND_PUBLIC_IP=$(aws ec2 describe-instances \
-              --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
-              --query 'Reservations[*].Instances[*].PublicIpAddress' \
-              --output text)
+            --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
+            --query 'Reservations[*].Instances[*].PublicIpAddress' \
+            --output text)
             echo $BACKEND_PUBLIC_IP >> .circleci/ansible/inventory.txt
             cat .circleci/ansible/inventory.txt
       - persist_to_workspace:
