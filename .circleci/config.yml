@@ -10,7 +10,7 @@ commands:
           event: fail
           channel: Circle_CICD
           template: basic_fail_1
-  instal_awscli:
+  install_awscli:
     description: Install AWS CLI v2
     steps:
       - run:
