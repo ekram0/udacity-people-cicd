@@ -43,7 +43,6 @@ commands:
             aws s3 rm s3://udacity-people-<<parameters.Workflow_ID>> --recursive
             aws cloudformation delete-stack --stack-name udapeople-frontend-<< parameters.Workflow_ID >>
             aws cloudformation delete-stack --stack-name udapeople-backend-<< parameters.Workflow_ID >>
-
   revert-migrations:
      description: Revert the last migration, if any were executed during the current workflow
      parameters:
@@ -56,7 +55,7 @@ commands:
            when: on_fail
            command: |
              SUCCESS=$(curl --insecure  https://kvdb.io/${KVDB_BUCKET}/migration_<< parameters.Workflow_ID >>)
-  
+
              # Logic for reverting the database state
              if (( $SUCCESS == 1 ));
              then
@@ -64,6 +63,20 @@ commands:
                npm install
                npm run migration:revert
              fi
+  install_nodejs:
+    description: Install Node.js 13.8.0
+    steps:
+      - run:
+          name: Install Node.js 13.8.0
+          command: |
+            # Install Node.js LTS version as our base Node.js version
+            curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
+            sudo apt install -y nodejs
+
+            # Use n version manager to use Node.js v13.8.0
+            sudo npm install --global n
+            sudo n 13.8.0
+
 
 jobs:
   build-frontend:
@@ -223,16 +236,20 @@ jobs:
 
     run-migrations:
       docker:
-        - iamge: cimg/node:13.8.0
+        - iamge: cimg/python:3.10
       steps:
         - checkout
         - install_awscli
+        - install_nodejs
+        - restore_cache:
+            keys: [backend-deps]
         - run:
             name: Run migrations
             command: |
               cd backend
               npm i 
               npm run migrations > migrations_dump.txt
+              cat migrations_dump.txt
         - run:
             name: Send migration status to kvdb.io
             command: |
