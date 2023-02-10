@@ -20,15 +20,15 @@ commands:
             unzip awscliv2.zip 
             sudo ./aws/install
   install_ansible:
-    description: install ansible v2
+    description: install ansible
     steps:
       - run:
-          name: install ansible v2
+          name: install ansible
           command: |
             sudo apt update 
-            sudo apt install software-properties-common  
+            sudo apt install software-properties-common  -y
             sudo add-apt-repository --yes --update ppa:ansible/ansible 
-            sudo apt install ansible
+            sudo apt install ansible -y
   destroy-environment:
     description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
     parameters:
@@ -263,26 +263,33 @@ jobs:
             fi
       - destroy-environment
       - revert-migrations
-  #   deploy-frontend:
-  #     docker:
-  #       # Docker image here that supports AWS CLI
-  #     steps:
-  #       # Checkout code from git
-  #       - run:
-  #           name: Install dependencies
-  #           command: |
-  #             # your code here
-  #       - run:
-  #           name: Get backend url
-  #           command: |
-  #             # your code here
-  #             export API_URL="http://${BACKEND_IP}:9100"
-  #             echo "${API_URL}"
-  #       - run:
-  #           name: Deploy frontend objects
-  #           command: |
-  #             # your code here
-  #       # Here's where you will add some code to rollback on failure
+      
+    deploy-frontend:
+      docker:
+        - image: cimg/base:stable
+      steps:
+        - checkout
+        - install_awscli
+        - install_nodejs
+        - restore_cache:
+            keys: [frontend-deps]
+        - run:
+            name: Install dependencies
+            command: |
+              cd frontend
+              npm install
+              # your code here
+        - run:
+            name: Get backend url
+            command: |
+              # your code here
+              export API_URL="http://${BACKEND_IP}:9100"
+              echo "${API_URL}"
+        - run:
+            name: Deploy frontend objects
+            command: |
+              # your code here
+        # Here's where you will add some code to rollback on failure
 
   #   deploy-backend:
   #     docker:
