@@ -263,43 +263,41 @@ jobs:
             fi
       - destroy-environment
       - revert-migrations
-      
-    deploy-frontend:
-      docker:
-        - image: cimg/base:stable
-      steps:
-        - checkout
-        - attach_workspace:
-            at: ~/
-        - install_awscli
-        - install_nodejs
-        - restore_cache:
-            keys: [frontend-deps]
-        - run:
-            name: Install dependencies
-            command: |
-              cd frontend
-              npm install
-        - run:
-            name: Get backend url
-            command: |
-              export BACKEND_IP=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" --query 'Reservations[].Instances[].PublicIpAddress' --output text)
-              export API_URL="http://${BACKEND_IP}:9100"
-              echo "API_URL = ${API_URL}"
-              echo API_URL="http://${BACKEND_IP}:9100" >> frontend/.env
-              cat frontend/.env
-        - run:
-            name: Deploy frontend objects
-            command: |
-              cd frontend
-              npm install
-              npm run build
-              tar -czvf artifact-"${CIRCLE_WORKFLOW_ID:0:7}".tar.gz dist
-              aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
-
-        - destroy-environment      
-        - revert-migrations
-
+    
+  deploy-frontend:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/
+      - install_awscli
+      - install_nodejs
+      - restore_cache:
+          keys: [frontend-deps]
+      - run:
+          name: Install dependencies
+          command: |
+            cd frontend
+            npm install
+      - run:
+          name: Get backend url
+          command: |
+            export BACKEND_IP=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" --query 'Reservations[].Instances[].PublicIpAddress' --output text)
+            export API_URL="http://${BACKEND_IP}:9100"
+            echo "API_URL = ${API_URL}"
+            echo API_URL="http://${BACKEND_IP}:9100" >> frontend/.env
+            cat frontend/.env
+      - run:
+          name: Deploy frontend objects
+          command: |
+            cd frontend
+            npm install
+            npm run build
+            tar -czvf artifact-"${CIRCLE_WORKFLOW_ID:0:7}".tar.gz dist
+            aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
+      - destroy-environment      
+      - revert-migrations
   #   deploy-backend:
   #     docker:
   #       # Docker image here that supports Ansible
