@@ -274,7 +274,7 @@ jobs:
   #           name: Get backend url
   #           command: |
   #             # your code here
-  #             export API_URL="http://${BACKEND_IP}:3030"
+  #             export API_URL="http://${BACKEND_IP}:9100"
   #             echo "${API_URL}"
   #       - run:
   #           name: Deploy frontend objects

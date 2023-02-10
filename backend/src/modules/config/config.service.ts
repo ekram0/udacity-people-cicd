@@ -38,7 +38,7 @@ export class ConfigService {
       NODE_ENV: Joi.string()
         .valid('local', 'development', 'production', 'test', 'provision')
         .default('local'),
-      BACKEND_PORT: Joi.number().default(3030),
+      BACKEND_PORT: Joi.number().default(9100),
       LOGGLY_SUBDOMAIN: Joi.string(),
       LOGGLY_TOKEN: Joi.string(),
       TYPEORM_ENTITIES: Joi.string().required(),
