@@ -11,14 +11,29 @@ commands:
           channel: Circle_CICD
           template: basic_fail_1
   install_awscli:
-    description: Install AWS CLI v2
+    description: Install AWS CLI (from cache if possible)
     steps:
+      - restore_cache:
+          key: awscliv2
+          paths:
+            - /tmp/aws    
       - run:
           name: Install AWS CLI v2
           command: |
+            # Skip downloading aws-cli bundle if cached
+            if [[ ! -f /tmp/aws/install ]]; then
             curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
             unzip awscliv2.zip 
             sudo ./aws/install
+            fi
+            # Skip installing if command exists
+            if ! command -v aws &> /dev/null; then
+              sudo /tmp/aws/install -i ~/bin
+            fi
+      - save_cache:
+          key: awscliv2
+          paths:
+            - /tmp/aws
   install_ansible:
     description: install ansible
     steps:
