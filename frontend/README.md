@@ -72,7 +72,7 @@ During build, CRA will import the backend API url from `API_URL` which you can u
 Example:
 
 ```
-API_URL=http://localhost:9100
+API_URL=http://localhost:3030
 ```
 
 ## Relative Paths in HTML

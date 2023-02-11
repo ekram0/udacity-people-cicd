@@ -167,7 +167,7 @@ Authentication has been applied to all endpoints, so it's not necessary to speci
 AUTH0_CLIENT_SECRET= <id placeholder, check trello card on OIW board in resources lane>
 AUTH0_CLIENT_ID= <id placeholder, check trello card on OIW board in resources lane>
 AUTH0_DOMAIN=glee2-dev.auth0.com
-AUTH0_AUDIENCE=http://localhost:9100
+AUTH0_AUDIENCE=http://localhost:3030
 ```
 
 (These vars work for our `Acklen` tenant in Auth0 using the API called "testing".)
@@ -178,7 +178,7 @@ To test the API with Postman, you will need a valid JWT encrypted with RS256 and
 curl --request POST \
   --url https://acklen.auth0.com/oauth/token \
   --header 'content-type: application/json' \
-  --data '{"client_id":"qrzt4jjhdmJHSdg5Ca6gVsdtY6x1xc2G","client_secret":"Xm6vhFnMv2BonJ8lhxsbCAZtIe5KjqqyXKNut5I5Spt4AQ3ms7mYTmwQ7JzIIwdt","audience":"http://localhost:9100","grant_type":"client_credentials"}'
+  --data '{"client_id":"qrzt4jjhdmJHSdg5Ca6gVsdtY6x1xc2G","client_secret":"Xm6vhFnMv2BonJ8lhxsbCAZtIe5KjqqyXKNut5I5Spt4AQ3ms7mYTmwQ7JzIIwdt","audience":"http://localhost:3030","grant_type":"client_credentials"}'
 ```
 
 (This only works with an "API" in Auth0. It will not work with an "Application" in Auth0 because they disable `client_credentials` grants by default and we have not found a way to enable that.)
