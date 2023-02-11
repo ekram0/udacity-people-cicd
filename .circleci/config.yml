@@ -40,8 +40,7 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - ansible-v1-{{ checksum "requirements.yml" }}
-            - ansible-v1-
+            - ansibleKey
       - run:
           name: install ansible
           command: |
@@ -55,7 +54,7 @@ commands:
           paths:
             - /usr/bin/ansible
             - /etc/ansible
-          key: ansible-v1-{{ checksum "requirements.yml" }}
+          key: ansibleKey
 
 
   destroy-environment:
