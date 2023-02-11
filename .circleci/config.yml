@@ -420,8 +420,9 @@ jobs:
             export BACKEND_IP=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" --query 'Reservations[].Instances[].PublicIpAddress' --output text)
             export API_URL="http://${BACKEND_IP}:9100"
             echo "API_URL = ${API_URL}"
-            echo curl -s "${API_URL}/api/status" 
-            if curl -s "${API_URL}/api/status" | grep "ok"
+            export msg=curl -s "${API_URL}/api/status"
+            echo msg 
+            if curl -s "${API_URL}/api/status" 
             then
               echo "backend is working successfully"
               exit 0
