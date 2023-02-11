@@ -232,7 +232,6 @@ jobs:
   configure-infrastructure:
     docker:
       - image: cimg/python:3.10
-    parallelism: 4
     steps:
       - checkout
       - setup_remote_docker:
@@ -324,7 +323,6 @@ jobs:
   deploy-backend:
     docker:
       - image: cimg/base:stable
-    parallelism: 4
     steps:
       - checkout
       - setup_remote_docker:
