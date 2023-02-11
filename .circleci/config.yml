@@ -52,7 +52,7 @@ commands:
             fi
       - save_cache:
           paths:
-            - /usr/bin/ansible
+            - /bin/ansible
             - /etc/ansible
           key: ansibleKey
 
