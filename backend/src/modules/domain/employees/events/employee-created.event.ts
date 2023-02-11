@@ -6,5 +6,7 @@ export class EmployeeCreated implements DomainEvent {
   constructor(employeeId: number, firstName: string) {
     this.employeeId = employeeId;
     this.firstName = firstName;
+    console.log("Emp");
+    
   }
 }
