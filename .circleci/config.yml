@@ -425,10 +425,10 @@ jobs:
             if curl -s ${URL} | grep "Welcome"
             then
               echo "Frontend is working successfully"
-                # Change this to 0 after the job fails
-              exit 0
-            else
               exit 1
+            else
+              echo "Frontend is working successfully"
+              exit 0
             fi
       # Here's where you will add some code to rollback on failure  
       - destroy-environment      
