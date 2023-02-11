@@ -84,6 +84,8 @@ jobs:
       - image: cimg/node:13.8.0
     steps:
       - checkout
+      - setup_remote_docker:
+          docker_layer_caching: true        
       - restore_cache:
           keys: [frontend-deps]
       - run:
@@ -102,6 +104,8 @@ jobs:
       - image: cimg/node:13.8.0
     steps:
       - checkout
+      - setup_remote_docker:
+          docker_layer_caching: true    
       - restore_cache:
           keys: [backend-deps]
       - run:
@@ -120,6 +124,8 @@ jobs:
       - image: cimg/node:13.8.0
     steps:
       - checkout
+      - setup_remote_docker:
+          docker_layer_caching: true    
       - restore_cache:
           keys: [frontend-deps]
       - run:
@@ -135,6 +141,8 @@ jobs:
       - image: cimg/node:13.8.0
     steps:
       - checkout
+      - setup_remote_docker:
+          docker_layer_caching: true    
       - restore_cache:
           keys: [backend-deps]
       - run:
@@ -150,6 +158,8 @@ jobs:
       - image: cimg/node:13.8.0
     steps:
       - checkout
+      - setup_remote_docker:
+          docker_layer_caching: true    
       - restore_cache:
           keys: [frontend-deps]
       - run:
@@ -167,6 +177,8 @@ jobs:
       - image: cimg/node:13.8.0
     steps:
       - checkout
+      - setup_remote_docker:
+          docker_layer_caching: true    
       - restore_cache:
           keys: [backend-deps]
       - run:
@@ -182,9 +194,10 @@ jobs:
   deploy-infrastructure:
     docker:
       - image: cimg/base:stable
-    parallelism: 4
     steps:
       - checkout
+      - setup_remote_docker:
+          docker_layer_caching: true    
       - install_awscli
       - run:
           name: Ensure back-end infrastructure exists
@@ -222,6 +235,8 @@ jobs:
     parallelism: 4
     steps:
       - checkout
+      - setup_remote_docker:
+          docker_layer_caching: true    
       - install_ansible
       - install_awscli
       - add_ssh_keys:
@@ -241,6 +256,8 @@ jobs:
       - image: cimg/node:13.8.0
     steps:
       - checkout
+      - setup_remote_docker:
+          docker_layer_caching: true  
       - restore_cache:
           keys: [backend-build]
       - install_awscli
@@ -271,6 +288,8 @@ jobs:
       - image: cimg/base:stable
     steps:
       - checkout
+      - setup_remote_docker:
+          docker_layer_caching: true    
       - attach_workspace:
           at: ~/
       - install_awscli
@@ -308,6 +327,8 @@ jobs:
     parallelism: 4
     steps:
       - checkout
+      - setup_remote_docker:
+          docker_layer_caching: true    
       - install_ansible
       - install_awscli
       - install_nodejs
@@ -351,6 +372,8 @@ jobs:
       - image: cimg/base:stable
     steps:
       - checkout
+      - setup_remote_docker:
+          docker_layer_caching: true    
       - run:
           name: Install dependencies
           command: |
