@@ -401,10 +401,11 @@ jobs:
             echo "API_URL = ${API_URL}"
             if curl -s "${API_URL}/api/status" | grep "ok"
             then
-              exit 1
-            else
               echo "backend is working successfully"
               exit 0
+            else
+              echo "backend is working successfully"
+              exit 1
             fi
       - run:
           name: Frontend smoke test.
@@ -416,7 +417,6 @@ jobs:
               echo "Frontend is working successfully"
               exit 1
             else
-              echo "Frontend is working successfully"
               exit 0
             fi
       # Here's where you will add some code to rollback on failure  
